@@ -1,0 +1,143 @@
+import datetime
+import time
+from selenium import webdriver
+from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
+
+url = 'https://ft-sandbox.workbench.lanit.ru/'
+user = 'admin'
+passwordUs ='adminft'
+
+"""ЗАПИСЫВАЕМ ЛОГИ В ТЕКСТОВЫЙ ФАЙЛ logs.txt Создаем функцию LOGS. После исполнения программы логи можно посмотреть 
+в директории проекта"""
+def LOGS():
+    outfile = open('logs.txt', 'w') #создаем файл
+    outfile.write(control1 +';\n')
+    outfile.write(control2 + ';\n')
+    outfile.write(control3 + ';\n')
+    outfile.write(contorl4 + ';\n')
+    outfile.write(control5 + ';\n')
+    outfile.write(control6 + ';\n')
+    outfile.write(control7 + ';\n')
+    outfile.write(control8 + ';\n')
+    outfile.close()
+
+driver = webdriver.Chrome()
+driver.maximize_window()
+tD = datetime.datetime.utcnow().strftime('%H.%M.%S') #переменная присваивания времени
+
+driver.get(url)
+scroll = driver.find_element(By.XPATH, "/html")
+control1 = 'Смоук автотест. Проверка создания и удаления тикета'
+control2 = f'Открытие сайта с адресом:_{url}'
+scMain = driver.save_screenshot(f'./screen/screenSmoke/main_.png') #скриншот
+autoRization = driver.find_element(By.XPATH, "//a[@id='userDropdown']")
+autoRization.click()
+time.sleep(1)
+autoRization_menu = driver.save_screenshot(f'./screen/screenSmoke/1.png') #скриншот
+username = driver.find_element(By.XPATH, "//input[@id='username']")
+username.send_keys(user)
+control3 = f'Ввод пользователя:_{user}'
+password = driver.find_element(By.XPATH, "//input[@id='password']")
+password.send_keys(passwordUs)
+contorl4 = f'Ввод пароля:_ {passwordUs}'
+checkbox_save = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/div\n"
+                                              "/div/div/div[2]/form/div[3]/div/label/input")
+checkbox_save.click()
+time.sleep(1)
+inputValues = driver.save_screenshot(f'./screen/screenSmoke/2.png') #скриншот
+autoRization_button = driver.find_element(By.XPATH, "//*[@id='content-wrapper']\n"
+                                                    "/div/div/div/div[2]/form/input[1]")
+control5 = f'Авторизация пользователя: {user} успешно пройдена'
+autoRization_button.click()
+time.sleep(1)
+newTicket = driver.find_element(By.XPATH, "/html/body/div/ul/li[4]/a") #создать новый тикет
+newTicket.click()
+
+'''СОЗДАНИЕ ТИКЕТА. При помощи веб драйвера проверяем позитивный сценарий с валидными значениями'''
+
+id_queue = driver.find_element(By.XPATH, "//*[@id='id_queue']")
+id_queue.click()
+id_queue.send_keys(Keys.DOWN)
+time.sleep(1)
+id_queue.click()
+time.sleep(1)
+queueSC = driver.save_screenshot(f'./screen/screenSmoke/3.png')
+id_title = driver.find_element(By.XPATH, "//*[@id='id_title']")
+id_title.send_keys("Обращение по сбою на сервере")
+time.sleep(1)
+titleSC = driver.save_screenshot(f'./screen/screenSmoke/4.png')
+id_body = driver.find_element(By.XPATH, "//*[@id='id_body']")
+id_body.send_keys(f'Позитивный сценарий с валидными данными')
+time.sleep(1)
+bodySC = driver.save_screenshot(f'./screen/screenSmoke/5.png')
+priority = driver.find_element(By.XPATH, "//*[@id='id_priority']")
+priority.click()
+priority = driver.find_element(By.XPATH, "//*[@id='id_priority']/option[2]")
+time.sleep(1)
+prioritySC = driver.save_screenshot(f'./screen/screenSmoke/6.png')
+priority.click()
+id_due_date = driver.find_element(By.XPATH, " //*[@id='id_due_date']")
+id_due_date.send_keys("2023-04-17") #дата
+time.sleep(1)
+dateSC = driver.save_screenshot(f'./screen/screenSmoke/7.png')
+id_due_date.click()
+submitter_email = driver.find_element(By.XPATH, "//*[@id='id_submitter_email']")
+submitter_email.clear()
+submitter_email.send_keys('QAintern@QA.ru')
+emailSC = driver.save_screenshot(f'./screen/screenSmoke/8.png')
+optional = driver.find_element(By.XPATH, "//*[@id='id_assigned_to']")
+optional.click()
+optionalAdmin = driver.find_element(By.XPATH, "//*[@id='id_assigned_to']/option[2]")
+optionalAdmin.click()
+time.sleep(1)
+AdminSC = driver.save_screenshot(f'./screen/screenSmoke/9.png')
+create_ticket = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/div/div/div/div[2]/form/button")
+create_ticket.click()
+namberTicket = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/div/ol/li[2]")
+control6 = f'Создан тикет с номером №: {namberTicket.text} успешно создан'
+time.sleep(1)
+driver.execute_script('window.scrollTo(0, 700)') #перемещение экрана вниз
+commentBox = driver.find_element(By.XPATH, "//*[@id='commentBox']")
+commentBox.send_keys("Добавим комментарии к этому тикету!")
+commentSC = driver.save_screenshot(f'./screen/screenSmoke/10.png')
+time.sleep(1)
+statusResolved = driver.find_element(By.XPATH, "//*[@id='st_resolved']")
+statusResolved.click()
+time.sleep(1)
+refreshTicket = driver.find_element(By.XPATH,"//*[@id='content-wrapper']/div/div[3]/div[2]/form/button")
+refreshTicket.click()
+time.sleep(1) 
+statusClosed = driver.find_element(By.XPATH, "//*[@id='st_closed']")
+statusClosed.click()
+time.sleep(1)
+refreshTicket = driver.find_element(By.XPATH,"//*[@id='content-wrapper']/div/div[3]/div[2]/form/button")
+refreshTicket.click()
+refreshSC = driver.save_screenshot(f'./screen/screenSmoke/11.png')
+time.sleep(1)
+deleteTicket = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/\n"
+                                            "div/div[1]/div/div/table/thead/tr/th/span/a[2]/button")
+deleteTicket.click()
+time.sleep(1)
+deleteSC = driver.save_screenshot(f'./screen/screenSmoke/12.png')
+delTicketNum = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/div/ol/li[2]/a")
+control7 = f'Создан тикет с номером №: {delTicketNum.text} успешно удален'
+dangerous = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/div/form/button")
+dangerous.click()
+ticketDel = driver.save_screenshot(f'./screen/screenSmoke/13.png')
+autoRizationExit = driver.find_element(By.XPATH, "//*[@id='userDropdown']")
+autoRizationExit.click()
+time.sleep(1)
+exit = driver.save_screenshot(f'./screen/screenSmoke/14.png')
+finallyExit = driver.find_element(By.XPATH, "//*[@id='bg-dark']/nav/ul/li[2]/div/a[5]")
+time.sleep(1)
+finally_ = driver.save_screenshot(f'./screen/screenSmoke/15.png')
+finallyExit.click()
+control8 = f'Выход из личного кабинета выполнен\nОтображается главная страница {url}'
+time.sleep(1)
+finish_ = driver.save_screenshot(f'./screen/screenSmoke/16.png')
+print("Запись логов")
+LOGS()
+
+
+
