@@ -10,7 +10,7 @@ driver.maximize_window()  # раскрытие окна браузера на в
 
 """Поиск созданного тикета через главную страницу"""
 
-driver.get('https://ft-sandbox.workbench.lanit.ru/')  # указываем желаемый URL
+driver.get('')  # указываем желаемый URL
 time.sleep(1)
 content_wrapper = driver.find_element(By.XPATH, "//*[@id='content-wrapper']\n"
                                                 "/div/div/div/div[3]/div/div/form/fieldset/div[1]/div/input")
