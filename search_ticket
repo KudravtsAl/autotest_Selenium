@@ -1,0 +1,36 @@
+import datetime
+import time  # library time
+
+from selenium import webdriver  # подключаем селениум и веб-драйвер
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()  # переменная с вызовом драйвера гугл хром
+
+driver.maximize_window()  # раскрытие окна браузера на весь экран
+
+"""Поиск созданного тикета через главную страницу"""
+
+driver.get('https://ft-sandbox.workbench.lanit.ru/')  # указываем желаемый URL
+time.sleep(1)
+content_wrapper = driver.find_element(By.XPATH, "//*[@id='content-wrapper']\n"
+                                                "/div/div/div/div[3]/div/div/form/fieldset/div[1]/div/input")
+content_wrapper.send_keys('DH-4033')
+content_wrapper_2 = driver.find_element(By.XPATH, "//*[@id='content-wrapper']\n"
+                                                  "/div/div/div/div[3]/div/div/form/fieldset/div[2]/div/input")
+content_wrapper_2.send_keys('QAintern@QA.ru')
+time.sleep(2)
+click_search = driver.find_element(By.XPATH, "//*[@id='content-wrapper']\n"
+                                             "/div/div/div/div[3]/div/div/form/fieldset/div[3]/input")
+click_search.click()
+time.sleep(2)
+driver.execute_script('window.scrollTo(0, 500)') #скролинг экрана до окна ввода
+"""добавим комментарий"""
+
+commanderBox = driver.find_element(By.XPATH, "//*[@id='commentBox']")
+commanderBox.send_keys("Добавим комментарии к этому тикету!")
+time.sleep(2)
+#status = driver.find_element(By.XPATH, "//*[@id='content-wrapper']/div/form/button")
+#status.click()
+#timeDate = datetime.datetime.utcnow().strftime('%m.%d.%H.%M.%S')
+#driver.save_screenshot(f'./screen/{timeDate}.png')
+time.sleep(2)
